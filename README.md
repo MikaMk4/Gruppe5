@@ -11,7 +11,7 @@ For our project, we are creating a library that helps to implement the Leitner s
 The most important features of our project are:
 1. Topic creation
 2. Card creation
-3. Choice between 3, 5 and 7 box systems per
+3. Choice between 3,(5 and 7) box systems per training session
 4. Drawing a random card from boxes that need to be learned
 5. Card history
 
@@ -24,16 +24,18 @@ We encountered the following interesting problems:
 
 [TODO]: # (For each feature implemented, add a row to the table!)
 
-| Number | Feature | Tests |
-|--------|---------|-------|
-| 1      | Topic creation       | canCreateTopicWithName     |
-| 2      | Card creation       | canCreateCard, canGetQuestion, canGetAnswer, canGetId     |
-| 3      | Box creation       | x     |
-| 4      | Box can hold cards       | canContainCards, boxIsEmptyAfterDrawingAllCards     |
-| 5      | Box can return random card      | canReturnRandomCard     |
-| 6      |        | /     |
-| 7      |        | /     |
-| 8      |        | /     |
+| Number | Feature                                       | Tests                                                                           |
+|--------|-----------------------------------------------|---------------------------------------------------------------------------------|
+| 1      | Topic creation                                | canCreateTopicWithName                                                          |
+| 2      | Card creation                                 | canCreateCard, canGetQuestion, canGetAnswer, canGetId                           |
+| 3      | Box creation                                  | x                                                                               |
+| 4      | Box can hold cards                            | canContainCards, boxIsEmptyAfterDrawingAllCards                                 |
+| 5      | Box can return random card                    | canReturnRandomCard                                                             |
+| 6      | Cards can be moved into a box                 | canMoveCardIntoBox                                                              |
+| 7      | Loading cards from json                       | load, canLoadSavedContent,                                                      |
+| 8      | Saving cards to json                          | save, canSaveSingleCard, canSaveMultipleCards, makeSureToOverwritePreviousSaves |
+| 9      | loading boxes from training-session from json | load,                                                                           |
+| 10     | loading boxes from training-session from json | save, canSave3Boxes, makeSureToOverwritePreviousSaves                                                           |
 
 
 ## Additional Dependencies
