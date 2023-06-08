@@ -3,8 +3,8 @@ package hwr.oop.cards;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class NewTopicLoadTest {
-    @Test
+class NewTopicLoadTest {
+    @Test //TODO
     void cannotLoadTopicTwiceWithOutDuplication(){
 
     }

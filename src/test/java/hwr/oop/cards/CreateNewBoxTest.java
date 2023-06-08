@@ -1,17 +1,20 @@
 package hwr.oop.cards;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CreateNewBoxTest {
+class CreateNewBoxTest {
     @Test
-    public void canContainCards(){
+     void canContainCards(){
         Boxes boxes = Boxes.createBoxes(3);
         Card card = new Card(" Bob", "der Baumeeister", 1);
         NewBox box = boxes.retrieve(1).get(); //no checking for isPresent()
@@ -92,6 +95,47 @@ public class CreateNewBoxTest {
         assertThat(box.isEmptyLearned()).isTrue();
         assertThat(isEmptyUnlearned).isFalse();
     }
+
+    @Test
+    void lastLearnedIsUpdatedAfterMovingCardUp(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
+        LocalDate oldCompDate = card.getLastLearned();
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(0).get();
+        box.addCard(card); //landet in learned
+        box.moveCardUp(card);
+        NewBox box2 = boxes.retrieve(1).get();
+        LocalDate compDate = box2.getRandomCard().getLastLearned();
+        assertThat(compDate).isNotEqualTo(oldCompDate);
+        assertThat(compDate).isEqualTo(LocalDate.now());
+    }@Test
+    void lastLearnedIsUpdatedAfterMovingCardDown(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
+        LocalDate oldCompDate = card.getLastLearned();
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box2 = boxes.retrieve(1).get();
+        box2.addCard(card); //landet in learned
+        box2.moveCardDown(card);
+        NewBox box1 = boxes.retrieve(0).get();
+        LocalDate compDate = box1.getRandomCard().getLastLearned();
+        assertThat(compDate).isNotEqualTo(oldCompDate);
+        assertThat(compDate).isEqualTo(LocalDate.now());
+    }
+
     @Test
     void boxIsEmptyAfterDrawingAllCards(){
         Boxes boxes = Boxes.createBoxes(3);
@@ -108,7 +152,7 @@ public class CreateNewBoxTest {
         box.getRandomCard();
         box.getRandomCard();
 
-        assertThat(box.isEmpty());
+        assertThat(box.isEmpty()).isTrue();
     }
     @Test
     void canGetLearnInterval(){
@@ -123,22 +167,28 @@ public class CreateNewBoxTest {
     @Test
     void canGetNextBox(){
         Boxes mediator = Boxes.createBoxes(3);
-        NewBox box1 = mediator.retrieve(0).get();
-        NewBox box2 = mediator.retrieve(1).get();
-        NewBox box3 = mediator.retrieve(2).get();
-        assertThat(mediator.retrieve(box1.getNext()).get()).isEqualTo(box2);
-        assertThat(mediator.retrieve(box2.getNext()).get()).isEqualTo(box3);
-        assertThrows(NoSuchElementException.class, () -> mediator.retrieve(box3.getNext()).get());
+        NewBox compBox1 = mediator.retrieve(0).get();
+        NewBox compBox2 = mediator.retrieve(1).get();
+        NewBox compBox3 = mediator.retrieve(2).get();
+        NewBox box2 = mediator.retrieve(compBox1.getNext()).get();
+        NewBox box3 = mediator.retrieve(compBox2.getNext()).get();
+        assertThat(box2).isEqualTo(compBox2);
+        assertThat(box3).isEqualTo(compBox3);
+        Optional opt = mediator.retrieve(compBox3.getNext());
+        assertThrows(NoSuchElementException.class, () -> opt.get());
     }
     @Test
     void canGetPreviousBox(){
         Boxes mediator = Boxes.createBoxes(3);
-        NewBox box1 = mediator.retrieve(0).get();
-        NewBox box2 = mediator.retrieve(1).get();
-        NewBox box3 = mediator.retrieve(2).get();
-        assertThat(mediator.retrieve(box3.getPrevious()).get()).isEqualTo(box2);
-        assertThat(mediator.retrieve(box2.getNext()).get()).isEqualTo(box1);
-        assertThrows(NoSuchElementException.class, () -> mediator.retrieve(box1.getPrevious()).get());
+        NewBox compBox1 = mediator.retrieve(0).get();
+        NewBox compBox2 = mediator.retrieve(1).get();
+        NewBox compBox3 = mediator.retrieve(2).get();
+        NewBox box2 = mediator.retrieve(compBox3.getPrevious()).get();
+        NewBox box1 = mediator.retrieve(compBox2.getPrevious()).get();
+        assertThat(box2).isEqualTo(compBox2);
+        assertThat(box1).isEqualTo(compBox1);
+        Optional opt = mediator.retrieve(compBox1.getPrevious());
+        assertThrows(NoSuchElementException.class, () -> opt.get());
     }
 }
 

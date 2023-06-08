@@ -2,13 +2,12 @@ package hwr.oop.cards;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CreateLernsessionTest {
+import java.io.IOException;
+
+class CreateLernsessionTest {
     @Test
     void canCreateLernsessionWith3Boxes(){
         Lernsession lernsession = Lernsession.createLernsessionWith3Boxes();

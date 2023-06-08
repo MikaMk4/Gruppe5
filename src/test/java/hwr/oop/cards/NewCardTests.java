@@ -8,7 +8,7 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NewCardTests {
+class NewCardTests {
 
 
     @Test
@@ -30,10 +30,10 @@ public class NewCardTests {
     void testEqualsNotOtherClass(){
         Card card = new Card("1", "2", 1);
         Topic topic = new Topic("Spanisch");
-        assertThat(!card.equals(topic));
+        assertThat(card.equals(topic)).isFalse();
     }
     @Test
-    public void canCreateCard() {
+    void canCreateCard() {
 
         Topic topic = new Topic("Spanisch");
 
@@ -43,21 +43,21 @@ public class NewCardTests {
         assertThat(testCard).isNotNull();
     }
     @Test
-    public void canDeleteCard(){
+    void canDeleteCard(){
         Topic topic = new Topic("Spanisch");
         topic.createCard("Tisch", "table");
         topic.deleteCard(topic.getCardList().get(0));
-        assertThat(topic.getCardList().isEmpty());
+        assertThat(topic.getCardList()).isEmpty();
     }
     @Test
-    public void cannotDeleteCard(){
+    void cannotDeleteCard(){
         Topic topic = new Topic("Spanisch");
         Card card = new Card("Fischkutter", "fishcutter", 1);
-        assertThat(!topic.deleteCard(card));
+        assertThat(topic.deleteCard(card)).isFalse();
     }
 
     @Test
-    public void canGetQuestion(){
+    void canGetQuestion(){
 
         Card card = new Card("What was the first item to be sold on Ebay?", "A broken laser pointer", 0);
 
@@ -65,7 +65,7 @@ public class NewCardTests {
         assertThat(testQuestion).isEqualTo("What was the first item to be sold on Ebay?");
     }
     @Test
-    public void canGetAnswer(){
+    void canGetAnswer(){
 
         Card card = new Card("What is the largest living organism on earth?", "The Great Barrier Reef", 0);
 
@@ -74,7 +74,7 @@ public class NewCardTests {
     }
 
     @Test
-    public void canGetId(){
+    void canGetId(){
 
         Card card = new Card("Test?", "Ja!", 42);
 
@@ -82,13 +82,13 @@ public class NewCardTests {
         assertThat(id).isEqualTo(42);
     }
     @Test
-    public void canGetLastLearned(){
+    void canGetLastLearned(){
         Card card = new Card("Test?", "Ja!", 42);
         LocalDate date = LocalDate.now();
         assertThat(date).isEqualTo(card.getLastLearned());
     }
     @Test
-    public void canEditCard(){
+    void canEditCard(){
         Lernsession lernsession = Lernsession.createLernsessionWith3Boxes();
         Topic topic = new Topic("Spanisch");
         topic.createCard("Soja", "beste!!!");
@@ -98,7 +98,7 @@ public class NewCardTests {
         assertThat(topic.getCardList().get(0).getQuestion()).isEqualTo("Tofu");
     }
     @Test
-    public void canUpdateLastLearned(){
+    void canUpdateLastLearned(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
         topic = pa.loadTopic("oldCard");

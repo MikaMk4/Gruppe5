@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class NewMoveCardTest {
+ class NewMoveCardTest {
     private Lernsession lernsession;
     private Topic topic;
     private NewBox box1;
