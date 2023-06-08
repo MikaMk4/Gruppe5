@@ -26,8 +26,8 @@ public class Boxes {
             final int next = current + 1;
             final int previous = current - 1;
             final NewBox loadedBox = boxen.get(current);
-            final ArrayList<Card> learnedCardList = loadedBox.getLearnedCardList();
-            final ArrayList<Card> unlearnedCardList = loadedBox.getUnlearnedCardList();
+            final List<Card> learnedCardList = loadedBox.getLearnedCardList();
+            final List<Card> unlearnedCardList = loadedBox.getUnlearnedCardList();
             final int learnInterval = loadedBox.getLearnInterval();
             final NewBox box = new NewBox(learnedCardList, unlearnedCardList, learnInterval, this, next, previous );
             map.put(current, box);

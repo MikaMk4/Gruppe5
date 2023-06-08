@@ -4,19 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Topic {
 
     private final String name;
-    private ArrayList<Card> cardList;
+    private List<Card> cardList;
 
     public Topic(@JsonProperty("name") String name){
         this.name = name;
         cardList = new ArrayList<>();
     }
 
-    public ArrayList<Card> getCardList() {
+    public List<Card> getCardList() {
         return cardList;
     }
 

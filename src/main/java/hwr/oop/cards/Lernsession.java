@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Lernsession {
     private final Boxes mediator;
-    private final int NUMBER_OF_BOXES;
+    private final int numberOfBoxes;
+    private Random random = new Random();
 
     // saving Boxes reference or reference to the box
     public static Lernsession createLernsessionWith3Boxes(){
@@ -24,7 +25,7 @@ public class Lernsession {
 
     private Lernsession(Boxes mediator) {
         this.mediator = mediator;
-        this.NUMBER_OF_BOXES = mediator.getBoxAmount();
+        this.numberOfBoxes = mediator.getBoxAmount();
     }
 
     public Boxes getBoxes() {
@@ -32,27 +33,24 @@ public class Lernsession {
     }
 
     public int getRandomBoxIndex() {
-        Random random = new Random();
-        int randomInt = random.nextInt(NUMBER_OF_BOXES - 1);
-        return randomInt;
+        return random.nextInt(numberOfBoxes - 1);
+
     }
     public int getRandomBoxIndexFromList(List<Integer> indexList){
-        Random random = new Random();
-        int randomInt = indexList.get(random.nextInt(indexList.size()));
-        return randomInt;
+        return indexList.get(random.nextInt(indexList.size()));
     }
 
     public Card getRandomCard(){
         NewBox box;
         List<Integer> indexList = new ArrayList<>();
-        for(int current = 0; current < NUMBER_OF_BOXES; current++){
+        for(int current = 0; current < numberOfBoxes; current++){
             indexList.add(current);
         }
         while (!indexList.isEmpty()) {
             Integer index = getRandomBoxIndexFromList(indexList); //keine int, da bei remove sonst index statt Object
             indexList.remove(index);
             box = mediator.retrieve(index).get();
-            if (!box.isEmpty_learned()) { //eigentlich unlearned,aber für Test so
+            if (!box.isEmptyLearned()) { //eigentlich unlearned,aber für Test so
                 return box.getRandomCard();
             }
         }
@@ -61,7 +59,7 @@ public class Lernsession {
 
     // loading new Topic
     void loadTopic(Topic topic) {
-        ArrayList<Card> cardList = topic.getCardList();
+        List<Card> cardList = topic.getCardList();
         NewBox box = mediator.retrieve(0).get();
         for (Card card : cardList) {
             box.addCard(card);
