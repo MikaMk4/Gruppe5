@@ -36,7 +36,7 @@ public class NewCardPersistenceTests {
     class saveCardTests{
 
         @Test
-        public void canSaveSingleCard(){
+         void canSaveSingleCard(){
 
             NewPersistenceSavePort persistenceSavePort = new NewJsonPersistenceAdapter();
             NewPersistenceLoadPort persistenceLoadPort = new NewJsonPersistenceAdapter();
@@ -59,7 +59,7 @@ public class NewCardPersistenceTests {
         }
 
         @Test
-        public void canSaveMultipleCards(){
+         void canSaveMultipleCards(){
 
             NewPersistenceSavePort persistenceSavePort = new NewJsonPersistenceAdapter();
             NewPersistenceLoadPort persistenceLoadPort = new NewJsonPersistenceAdapter();

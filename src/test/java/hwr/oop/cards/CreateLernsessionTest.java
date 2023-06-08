@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class CreateLernsessionTest {
+class CreateLernsessionTest {
     @Test
     void canCreateLernsessionWith3Boxes(){
         Lernsession lernsession = Lernsession.createLernsessionWith3Boxes();
