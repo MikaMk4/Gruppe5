@@ -5,8 +5,6 @@ import java.util.*;
 public class Lernsession {
     private final Boxes mediator;
     private final int NUMBER_OF_BOXES;
-    private int currentBoxIndex;
-    private Card currentCard;
 
     // saving Boxes reference or reference to the box
     public static Lernsession createLernsessionWith3Boxes(){
@@ -27,7 +25,6 @@ public class Lernsession {
     private Lernsession(Boxes mediator) {
         this.mediator = mediator;
         this.NUMBER_OF_BOXES = mediator.getBoxAmount();
-        currentBoxIndex = 0;
     }
 
     public Boxes getBoxes() {
@@ -37,13 +34,11 @@ public class Lernsession {
     public int getRandomBoxIndex() {
         Random random = new Random();
         int randomInt = random.nextInt(NUMBER_OF_BOXES - 1);
-        this.currentBoxIndex = randomInt;
         return randomInt;
     }
     public int getRandomBoxIndexFromList(List<Integer> indexList){
         Random random = new Random();
         int randomInt = indexList.get(random.nextInt(indexList.size()));
-        this.currentBoxIndex = randomInt;
         return randomInt;
     }
 
