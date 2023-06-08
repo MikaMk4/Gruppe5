@@ -49,24 +49,6 @@ public class Lernsession {
         Integer index = getRandomBoxIndexFromList(indexList);
         return mediator.retrieve(index).get().getRandomCard();
     }
-    /*@Deprecated
-    public Card oldGetRandomCard(){
-        NewBox box;
-        List<Integer> indexList = new ArrayList<>();
-        for(int current = 0; current < numberOfBoxes; current++){
-            indexList.add(current);
-        }
-        while (!indexList.isEmpty()) {
-            Integer index = getRandomBoxIndexFromList(indexList); //keine int, da bei remove sonst index statt Object
-            indexList.remove(index);
-            box = mediator.retrieve(index).get();
-            if (!box.isEmptyLearned()) { //eigentlich unlearned,aber für Test so
-                return box.getRandomCard();
-            }
-        }
-        throw new EmptyBoxesException();
-    }*/
-
     // loading new Topic
     void loadTopic(Topic topic) {
         List<Card> cardList = topic.getCardList();
