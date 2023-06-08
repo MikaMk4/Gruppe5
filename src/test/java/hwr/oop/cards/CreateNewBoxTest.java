@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CreateNewBoxTest {
@@ -37,7 +38,12 @@ public class CreateNewBoxTest {
         Card card2 = new Card("blabal", "2", 4);
         box1.addCard(card);
         box2.addCard(card2);
-        assertThat(box1).isNotEqualTo(box2);
+
+        assertAll(
+                () -> assertThat(box1).isNotEqualTo(box2),
+                () -> assertThat(box1).isNotEqualTo(null),
+                () -> assertThat(box1).isNotEqualTo("test")
+        );
     }
 
     @Test
@@ -139,6 +145,23 @@ public class CreateNewBoxTest {
         assertThat(mediator.retrieve(box3.getPrevious()).get()).isEqualTo(box2);
         assertThat(mediator.retrieve(box2.getNext()).get()).isEqualTo(box1);
         assertThrows(NoSuchElementException.class, () -> mediator.retrieve(box1.getPrevious()).get());
+    }
+
+    @Test
+    void checkIfBoxIsEmpty(){
+        Boxes mediator = Boxes.createBoxes(3);
+        NewBox box = mediator.retrieve(0).get();
+
+        assertThat(box.isEmpty()).isTrue();
+    }
+
+    @Test
+    void checkIfBoxIsNotEmpty(){
+        Boxes mediator = Boxes.createBoxes(3);
+        NewBox box = mediator.retrieve(0).get();
+        box.addCard(new Card("", "", 0));
+
+        assertThat(box.isEmpty()).isFalse();
     }
 }
 

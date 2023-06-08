@@ -71,20 +71,16 @@ public class NewBox{
     @JsonIgnore
     public void updateBox() {
         LocalDate currentDate = LocalDate.now();
-        int index = 0;
-        ArrayList <Integer> indices = new ArrayList<>();
-        for (Card card: this.learnedCardList){
+
+        for (int i = learnedCardList.size()-1; i >= 0; i--){
+            Card card = learnedCardList.get(i);
             LocalDate lernTag = card.getLastLearned();
             lernTag = lernTag.plusDays(learnInterval);
             if (lernTag.isBefore(currentDate)){
-                this.unlearnedCardList.add(card);
-                indices.add(index);
+                unlearnedCardList.add(card);
             }
-            index++;
-        }
 
-        for (Integer i: indices){
-            this.learnedCardList.remove((int)i); //cast nötig weil Remove(Object o) aufgerufen wird statt remove(index i)
+            learnedCardList.remove(i);
         }
     }
     @JsonIgnore
