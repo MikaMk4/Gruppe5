@@ -1,6 +1,5 @@
 package hwr.oop.cards;
 
-import java.io.IOException;
 import java.util.Collection;
 
 public interface NewPersistenceLoadPort {
