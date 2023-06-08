@@ -1,18 +1,23 @@
 package hwr.oop.cards;
 
+import java.util.Date;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Card {
     private final int id;
-    private final String question;
-    private final String answer;
+    private String question;
+    private String answer;
+    private Date lastLearned;
 
     public Card(@JsonProperty("question") String question, @JsonProperty("answer") String answer, @JsonProperty("id") int id) {
 
         this.question = question;
         this.answer = answer;
         this.id = id;
+        this.lastLearned = new Date();
     }
 
     public String getQuestion() {
@@ -32,13 +37,17 @@ public class Card {
             return false;
         }
         Card other = (Card) obj;
-        return Objects.equals(question, other.question) && Objects.equals(answer, other.answer);
+        return Objects.equals(question, other.question) && Objects.equals(answer, other.answer) && Objects.equals(id, other.id) && Objects.equals(lastLearned, other.lastLearned);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(question, answer);
+    @JsonIgnore
+    public void edit(String question, String answer){
+        this.question = question;
+        this.answer = answer;
     }
 
     public int getId() { return id; }
+
+    public Date getLastLearned() {
+        return lastLearned;
+    }
 }

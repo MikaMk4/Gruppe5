@@ -6,11 +6,11 @@ import java.util.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceLoadPort {
+public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPersistenceLoadPort {
 
     static final String EXCEPTION_TEXT = "persistenceInstanceName should not be empty.";
 
-    public void saveTrainingInstance(Collection<Box> boxes, String persistenceInstanceName) throws IOException {
+    public void saveLernsession(Collection<NewBox> boxen, String persistenceInstanceName) throws IOException {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -18,7 +18,7 @@ public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceL
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(new File(persistenceInstanceName), boxes);
+        mapper.writeValue(new File(persistenceInstanceName), boxen);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceL
         }
     }
 
-    public Collection<Box> loadTrainingInstance(String persistenceInstanceName) throws IOException {
+    public Collection<NewBox> loadLernsession(String persistenceInstanceName) throws IOException {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -44,11 +44,11 @@ public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceL
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Box>> typeReference = new TypeReference<List<Box>>(){};
-        List<Box> boxes = mapper.readValue(new File(persistenceInstanceName), typeReference);
+        TypeReference<List<NewBox>> typeReference = new TypeReference<List<NewBox>>(){};
+        List<NewBox> boxes = mapper.readValue(new File(persistenceInstanceName), typeReference);
 
         Map<Integer, Card> cards = new HashMap<>();
-        for (Box box : boxes) {
+        for (NewBox box : boxes) {
             for (Card card : box.getLearnedCardList()) {
                 cards.put(card.getId(), card);
             }
@@ -57,8 +57,8 @@ public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceL
             }
         }
 
-        List<Box> result = new ArrayList<>();
-        for (Box box : boxes) {
+        List<NewBox> result = new ArrayList<>();
+        for (NewBox box : boxes) {
             ArrayList<Card> learnedCardList = new ArrayList<>();
             ArrayList<Card> notLearnedCardList = new ArrayList<>();
             for (Card card : box.getLearnedCardList()) {
@@ -67,10 +67,13 @@ public class JsonPersistenceAdapter implements PersistenceSavePort, PersistenceL
             for (Card card : box.getUnlearnedCardList()) {
                 notLearnedCardList.add(cards.get(card.getId()));
             }
-            result.add(new Box(learnedCardList, notLearnedCardList));
+            int learnInterval = box.getLearnInterval();
+            int previousBox = box.getPrevious();
+            int nextBox = box.getNext();
+            result.add(new NewBox(learnedCardList, notLearnedCardList, learnInterval, null, nextBox, previousBox ));
         }
 
-        return result;
+        return boxes;
     }
     @Override
     public void saveTopic(Topic topic, String persistenceInstanceName) throws IOException {
