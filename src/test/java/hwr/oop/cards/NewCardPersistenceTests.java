@@ -43,18 +43,11 @@ public class NewCardPersistenceTests {
 
             Topic topic = new Topic("testTopic");
             topic.createCard("Question?", "Answer!");
-            try {
-                persistenceSavePort.saveTopic(topic, "test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveTopic(topic, "test");
 
             Topic testTopic = null;
-            try {
-                testTopic = persistenceLoadPort.loadTopic("test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            testTopic = persistenceLoadPort.loadTopic("test");
+
             Assertions.assertThat(testTopic).isEqualTo(topic);
         }
 
@@ -67,20 +60,12 @@ public class NewCardPersistenceTests {
             Topic topic = new Topic("testTopic");
             topic.createCard("Question?", "Answer!");
             topic.createCard("Frage?", "Antwort!");
-            try {
-                persistenceSavePort.saveTopic(topic, "test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveTopic(topic, "test");
 
             Topic testTopic = null;
-            try {
-                testTopic = persistenceLoadPort.loadTopic("test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Assertions.assertThat(testTopic).isEqualTo(topic);
+            testTopic = persistenceLoadPort.loadTopic("test");
 
+            Assertions.assertThat(testTopic).isEqualTo(topic);
         }
 
         @Test void makeSureToOverwritePreviousSaves(){
@@ -90,28 +75,16 @@ public class NewCardPersistenceTests {
 
             Topic topic = new Topic("testTopic");
             topic.createCard("Question?", "Answer!");
-            try {
-                persistenceSavePort.saveTopic(topic, "test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveTopic(topic, "test");
 
             Topic topic1 = new Topic("testTopic");
             topic.createCard("Question??????", "Answer!!!!!!");
-            try {
-                persistenceSavePort.saveTopic(topic1, "test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveTopic(topic1, "test");
 
             Topic testTopic = null;
-            try {
-                testTopic = persistenceLoadPort.loadTopic("test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Assertions.assertThat(testTopic).isEqualTo(topic1);
+            testTopic = persistenceLoadPort.loadTopic("test");
 
+            Assertions.assertThat(testTopic).isEqualTo(topic1);
         }
     }
 
@@ -125,11 +98,7 @@ public class NewCardPersistenceTests {
             savedTopic = new Topic("testTopic");
             savedTopic.createCard("Question?", "Answer!");
             savedTopic.createCard("Frage?", "Antwort!");
-            try {
-                pa.saveTopic(savedTopic, "test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            pa.saveTopic(savedTopic, "test");
         }
 
         @Test
@@ -138,11 +107,8 @@ public class NewCardPersistenceTests {
             NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
 
             Topic loadedTopic = null;
-            try {
-                loadedTopic = pa.loadTopic("test");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            loadedTopic = pa.loadTopic("test");
+
             Assertions.assertThat(loadedTopic).isEqualTo(savedTopic);
         }
     }
@@ -156,10 +122,6 @@ public class NewCardPersistenceTests {
 
         Topic topic = new Topic("testTopic");
         topic.createCard("Question?", "Answer!");
-        try {
-            pa.saveTopic(topic, "manual_test");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        pa.saveTopic(topic, "manual_test");
     }
 }

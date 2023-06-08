@@ -1,8 +1,8 @@
 # HWR OOP Lecture - Group 5 Project (Leitner System) 
 
-This repository contains a student project created for an ongoing lecture on object-oriented programming with Java at HWR Berlin (summer term 2022).
+This repository contains a student project created for an ongoing lecture on object-oriented programming with Java at HWR Berlin (summer term 2023).
 
-> :warning: This code is for educational purpose only. Do not rely on it!
+> :warning: This code is for educational purposes only. Do not rely on it!
 
 ## Abstract
 
@@ -33,10 +33,11 @@ We encountered the following interesting problems:
 | 4      | Box can hold cards                            | canContainCards, boxIsEmptyAfterDrawingAllCards                                                                            |
 | 5      | Box can return random card                    | canReturnRandomCard                                                                                                        |
 | 6      | Cards can be moved up/down                    | canMoveCardUp, canMoveCardUp2Times, canMoveCardUpTopBox, canMoveCardDown, canMoveCardDown2Times, canMoveCardDownBottomBox, |
-| 7      | Random card can be drawn from random box      | canGetRandomCardFromRandomBox, canGetRandomBoxIndex                                                                        |
-| 8      | Cards and boxes can be saved and loaded       | BoxPersistenceTests, CardPersistenceTests                                                                                  |
-| 9      | Trainer can be initialized with 3/5/7 boxes   | canCreateTrainerWith3Boxes, canCreateTrainerWith5Boxes, canCreateTrainerWith7Boxes                                         |
-| 10     | Trainer can be initialized with a saved topic | canCreateTrainerFromSave                                                                                                   |
+| 7      | Cards question and answer can be edited                    | canEditCard, |
+| 8      | Random card can be drawn from random box      | canGetRandomCardFromRandomBox, canGetRandomBoxIndex                                                                        |
+| 9      | Cards and boxes can be saved and loaded       | BoxPersistenceTests, CardPersistenceTests                                                                                  |
+| 10      | Lernsession can be initialized with 3/5/7 boxes   | createLernsessionWith3Boxes, canCreateTrainerWith5Boxes, canCreateTrainerWith7Boxes                                         |
+| 11     | Lernsession can be initialized with a saved topic | canCreateLernsessionFromSave                                                                                                   |
 
 ## Additional Dependencies
 
@@ -45,6 +46,7 @@ We encountered the following interesting problems:
 | Number | Dependency Name | Dependency Description                                   | Why is it necessary?                                     |
 |--------|-----------------|----------------------------------------------------------|----------------------------------------------------------|
 | 1      | Jackson         | Library for Serialization and Deserialization of objects | This is needed for persistence in the form of JSON files |
+| 2      | Jackson Datatype jsr310| Used to support LocalDate in Jackson in serialization | Jackson does not support LocalDate in default version|
 
 ### Multiple remote repositories
 

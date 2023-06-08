@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 public interface NewPersistenceLoadPort {
-    Topic loadTopic(String persistenceInstanceName) throws IOException;
+    Topic loadTopic(String persistenceInstanceName);
 
-    Collection<NewBox> loadLernsession(String persistenceInstanceName) throws IOException;
+    Collection<NewBox> loadLernsession(String persistenceInstanceName);
 }
