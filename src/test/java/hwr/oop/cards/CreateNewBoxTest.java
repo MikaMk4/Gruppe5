@@ -1,9 +1,11 @@
 package hwr.oop.cards;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -99,6 +101,47 @@ class CreateNewBoxTest {
         assertThat(box.isEmptyLearned()).isTrue();
         assertThat(isEmptyUnlearned).isFalse();
     }
+
+    @Test
+    void lastLearnedIsUpdatedAfterMovingCardUp(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
+        LocalDate oldCompDate = card.getLastLearned();
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(0).get();
+        box.addCard(card); //landet in learned
+        box.moveCardUp(card);
+        NewBox box2 = boxes.retrieve(1).get();
+        LocalDate compDate = box2.getRandomCard().getLastLearned();
+        assertThat(compDate).isNotEqualTo(oldCompDate);
+        assertThat(compDate).isEqualTo(LocalDate.now());
+    }@Test
+    void lastLearnedIsUpdatedAfterMovingCardDown(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
+        LocalDate oldCompDate = card.getLastLearned();
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box2 = boxes.retrieve(1).get();
+        box2.addCard(card); //landet in learned
+        box2.moveCardDown(card);
+        NewBox box1 = boxes.retrieve(0).get();
+        LocalDate compDate = box1.getRandomCard().getLastLearned();
+        assertThat(compDate).isNotEqualTo(oldCompDate);
+        assertThat(compDate).isEqualTo(LocalDate.now());
+    }
+
     @Test
     void boxIsEmptyAfterDrawingAllCards(){
         Boxes boxes = Boxes.createBoxes(3);
