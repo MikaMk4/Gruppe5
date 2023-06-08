@@ -11,9 +11,11 @@ public class LoadLernsessionFromPersistenceUseCase {
         this.persistenceLoadPort = persistenceLoadPort;
     }
 
-    public Lernsession loadLernsession(String filename) throws IOException {
+    public Lernsession loadLernsession(String filename) {
         Lernsession lernsession;
-        List<NewBox> boxList = (List)persistenceLoadPort.loadLernsession(filename);
+
+        List<NewBox> boxList = null;
+        boxList = (List)persistenceLoadPort.loadLernsession(filename);
         Boxes boxes = new Boxes(boxList);
         lernsession = Lernsession.createLernsessionFromBoxes(boxes);
         return lernsession;
