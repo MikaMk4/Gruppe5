@@ -1,6 +1,6 @@
 package hwr.oop.cards;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,14 +10,14 @@ public class Card {
     private final int id;
     private String question;
     private String answer;
-    private Date lastLearned;
+    private LocalDate lastLearned;
 
     public Card(@JsonProperty("question") String question, @JsonProperty("answer") String answer, @JsonProperty("id") int id) {
 
         this.question = question;
         this.answer = answer;
         this.id = id;
-        this.lastLearned = new Date();
+        this.lastLearned = LocalDate.now();
     }
 
     public String getQuestion() {
@@ -37,7 +37,7 @@ public class Card {
             return false;
         }
         Card other = (Card) obj;
-        return Objects.equals(question, other.question) && Objects.equals(answer, other.answer) && Objects.equals(id, other.id) && Objects.equals(lastLearned, other.lastLearned);
+        return Objects.equals(question, other.question) && Objects.equals(answer, other.answer) && Objects.equals(id, other.id);
     }
     @JsonIgnore
     public void edit(String question, String answer){
@@ -47,7 +47,11 @@ public class Card {
 
     public int getId() { return id; }
 
-    public Date getLastLearned() {
+    public LocalDate getLastLearned() {
         return lastLearned;
+    }
+    @JsonIgnore
+    public void updateLastLearned(){
+        lastLearned = LocalDate.now();
     }
 }

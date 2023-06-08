@@ -2,27 +2,28 @@ package hwr.oop.cards;
 
 import com.fasterxml.jackson.annotation.*;
 
-import javax.swing.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class NewBox{
-    private ArrayList<Card> learnedCardList;
-    private ArrayList<Card> unlearnedCardList;
+    private List<Card> learnedCardList;
+    private List<Card> unlearnedCardList;
     private final Boxes boxes;
     private final int next;
     private final int previous;
     private int learnInterval;
+    Random random = new Random();
 
     public NewBox(int learnInterval, Boxes boxes, int next, int previous){
-        learnedCardList = new ArrayList<Card>();
-        unlearnedCardList = new ArrayList<Card>();
+        learnedCardList = new ArrayList<>();
+        unlearnedCardList = new ArrayList<>();
         this.learnInterval = learnInterval;
         this.boxes = boxes;
         this.next = next;
         this.previous = previous;
     }
     @JsonCreator
-    public NewBox(@JsonProperty("learnedCardList") ArrayList<Card> learnedCardList, @JsonProperty("unlearnedCardList") ArrayList<Card> unlearnedCardList, @JsonProperty("learnInterval") int learnInterval, @JsonProperty("boxes") Boxes boxes, @JsonProperty("next") int next, @JsonProperty("previous") int previous){
+    public NewBox(@JsonProperty("learnedCardList") List<Card> learnedCardList, @JsonProperty("unlearnedCardList") List<Card> unlearnedCardList, @JsonProperty("learnInterval") int learnInterval, @JsonProperty("boxes") Boxes boxes, @JsonProperty("next") int next, @JsonProperty("previous") int previous){
         this.learnedCardList = learnedCardList;
         this.unlearnedCardList = unlearnedCardList;
         this.learnInterval = learnInterval;
@@ -40,6 +41,8 @@ public class NewBox{
             box.addCard(card);
         }catch(NoSuchElementException error){ //ok? oder auf isPresent checken?
             this.addCard(card);
+        }finally {
+            card.updateLastLearned();
         }
     }
 
@@ -49,32 +52,31 @@ public class NewBox{
             box.addCard(card);
         }catch(NoSuchElementException error){ //ok? oder auf isPresent checken?
             this.addCard(card);
+        }finally {
+            card.updateLastLearned();
         }
     }
     @JsonIgnore
-    public boolean isEmpty_learned() {
+    public boolean isEmptyLearned() {
         return learnedCardList.isEmpty();
     }
     @JsonIgnore
 
-    public boolean isEmpty_unlearned() {
+    public boolean isEmptyUnlearned() {
         return unlearnedCardList.isEmpty();
     }
     @JsonIgnore
 
     public boolean isEmpty(){ return (learnedCardList.isEmpty()&& unlearnedCardList.isEmpty());}
-    /*@JsonIgnore
+    @JsonIgnore
     public void updateBox() {
-        Date currentDate = new Date();
-        Calendar learnDate = Calendar.getInstance();
+        LocalDate currentDate = LocalDate.now();
         int index = 0;
-        ArrayList <Integer> indices = new ArrayList<Integer>();
-        Date lernTag = new Date();
+        ArrayList <Integer> indices = new ArrayList<>();
         for (Card card: this.learnedCardList){
-            learnDate.setTime(card.getLastLearned()); //setzt Datum
-            learnDate.add(Calendar.DATE, learnInterval); //addiert Regel darauf
-            lernTag = learnDate.getTime(); //cast ist nötig
-            if (lernTag.before(currentDate)){
+            LocalDate lernTag = card.getLastLearned();
+            lernTag = lernTag.plusDays(learnInterval);
+            if (lernTag.isBefore(currentDate)){
                 this.unlearnedCardList.add(card);
                 indices.add(index);
             }
@@ -84,11 +86,10 @@ public class NewBox{
         for (Integer i: indices){
             this.learnedCardList.remove((int)i); //cast nötig weil Remove(Object o) aufgerufen wird statt remove(index i)
         }
-    }*/
+    }
     @JsonIgnore
     public Card getRandomCard() {
         // learnedCardList müsste unlearned sein in der Logik mit einem Datum, für die Tests aber hinderlich
-        Random random = new Random();
         int index = random.nextInt(learnedCardList.size());
         Card returnCard = learnedCardList.get(index);
         learnedCardList.remove(index);
@@ -118,11 +119,11 @@ public class NewBox{
         return true;
     }
 
-    public ArrayList<Card> getLearnedCardList() {
+    public List<Card> getLearnedCardList() {
         return learnedCardList;
     }
 
-    public ArrayList<Card> getUnlearnedCardList() {
+    public List<Card> getUnlearnedCardList() {
         return unlearnedCardList;
     }
 
