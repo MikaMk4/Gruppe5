@@ -39,8 +39,18 @@ public class Lernsession {
     public int getRandomBoxIndexFromList(List<Integer> indexList){
         return indexList.get(random.nextInt(indexList.size()));
     }
-
     public Card getRandomCard(){
+        NewBox box;
+        List<Integer> indexList = new ArrayList<>();
+        for(int current = 0; current < numberOfBoxes; current++){
+            if(!(mediator.retrieve(current).get().isEmptyLearned())) indexList.add(current);
+        }
+        if(indexList.isEmpty()) throw new EmptyBoxesException();
+        Integer index = getRandomBoxIndexFromList(indexList);
+        return mediator.retrieve(index).get().getRandomCard();
+    }
+    /*@Deprecated
+    public Card oldGetRandomCard(){
         NewBox box;
         List<Integer> indexList = new ArrayList<>();
         for(int current = 0; current < numberOfBoxes; current++){
@@ -55,7 +65,7 @@ public class Lernsession {
             }
         }
         throw new EmptyBoxesException();
-    }
+    }*/
 
     // loading new Topic
     void loadTopic(Topic topic) {
