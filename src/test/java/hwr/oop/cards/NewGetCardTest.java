@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class NewGetCardTest {
+class NewGetCardTest {
     private Lernsession lernsession;
     private Topic topic;
     private NewBox box1;
@@ -46,13 +46,13 @@ public class NewGetCardTest {
         Assertions.assertThat(card).isIn(topic.getCardList());
     }
     @Test
-    public void cannotReturnRandomCardFromEmptyLernsession(){
+    void cannotReturnRandomCardFromEmptyLernsession(){
         Lernsession lernsession1 = Lernsession.createLernsessionWith3Boxes();
         assertThrows(Lernsession.EmptyBoxesException.class, () -> lernsession1.getRandomCard());
     }
 
     @Test
-    public void canReturnRandomCard(){
+    void canReturnRandomCard(){
 
         Boxes mediator = Boxes.createBoxes(3);
         NewBox box = mediator.retrieve(0).get();
