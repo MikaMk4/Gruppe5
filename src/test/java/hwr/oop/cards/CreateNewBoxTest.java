@@ -51,11 +51,8 @@ public class CreateNewBoxTest {
     void unlearnedCardListIsNotEmpty(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
-        try {
-            topic = pa.loadTopic("oldCard");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        topic = pa.loadTopic("oldCard");
+
         Card card = topic.getCardList().get(0);
         Boxes boxes = Boxes.createBoxes(3);
         NewBox box = boxes.retrieve(0).get();
@@ -84,11 +81,8 @@ public class CreateNewBoxTest {
     void canUpdateBox(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
-        try {
-            topic = pa.loadTopic("oldCard");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        topic = pa.loadTopic("oldCard");
+
         Card card = topic.getCardList().get(0);
         Boxes boxes = Boxes.createBoxes(3);
         NewBox box = boxes.retrieve(0).get();

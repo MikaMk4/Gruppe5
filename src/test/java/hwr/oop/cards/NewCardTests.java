@@ -101,11 +101,8 @@ public class NewCardTests {
     public void canUpdateLastLearned(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
-        try {
-            topic = pa.loadTopic("oldCard");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        topic = pa.loadTopic("oldCard");
+
         Card card = topic.getCardList().get(0);
         LocalDate oldLastLearned = card.getLastLearned();
         card.updateLastLearned();
