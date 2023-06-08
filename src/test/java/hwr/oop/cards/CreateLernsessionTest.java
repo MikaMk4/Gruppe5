@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class CreateLernsessionTest {
     @Test
     void canCreateLernsessionWith3Boxes(){
@@ -29,9 +32,17 @@ public class CreateLernsessionTest {
         Lernsession lernsession = null;
         try{
             lernsession = creator.loadLernsession("test_box");
-        }catch (IOException error){
+        }catch (PersistenceException error){
             error.printStackTrace();
         }
         Assertions.assertThat(lernsession.getBoxes()).isNotNull();
+    }
+
+    @Test
+    void throwsExceptionWhenInvalidInstanceName(){
+        NewPersistenceLoadPort loadPort = new NewJsonPersistenceAdapter();
+        LoadLernsessionFromPersistenceUseCase creator = new LoadLernsessionFromPersistenceUseCase(loadPort);
+
+        assertThrows(PersistenceException.class, () -> {Lernsession lernsession = creator.loadLernsession("\\sdf");});
     }
 }

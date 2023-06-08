@@ -10,7 +10,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
 
     static final String EXCEPTION_TEXT = "persistenceInstanceName should not be empty.";
 
-    public void saveLernsession(Collection<NewBox> boxen, String persistenceInstanceName) throws IOException {
+    public void saveLernsession(Collection<NewBox> boxen, String persistenceInstanceName) {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -18,12 +18,16 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.writeValue(new File(persistenceInstanceName), boxen);
+        try {
+            mapper.registerModule(new JavaTimeModule());
+            mapper.writeValue(new File(persistenceInstanceName), boxen);
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Topic loadTopic(String persistenceInstanceName) throws IOException {
+    public Topic loadTopic(String persistenceInstanceName) {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -35,10 +39,12 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
             String json = reader.readLine();
             return mapper.readValue(json, new TypeReference<>() {
             });
+        } catch (IOException e){
+            throw new PersistenceException(e);
         }
     }
 
-    public Collection<NewBox> loadLernsession(String persistenceInstanceName) throws IOException {
+    public Collection<NewBox> loadLernsession(String persistenceInstanceName) {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -48,7 +54,12 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         TypeReference<List<NewBox>> typeReference = new TypeReference<List<NewBox>>(){};
-        List<NewBox> boxes = mapper.readValue(new File(persistenceInstanceName), typeReference);
+        List<NewBox> boxes = null;
+        try {
+            boxes = mapper.readValue(new File(persistenceInstanceName), typeReference);
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
 
         Map<Integer, Card> cards = new HashMap<>();
         for (NewBox box : boxes) {
@@ -79,7 +90,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         return boxes;
     }
     @Override
-    public void saveTopic(Topic topic, String persistenceInstanceName) throws IOException {
+    public void saveTopic(Topic topic, String persistenceInstanceName) {
 
         if (persistenceInstanceName.isEmpty()){
 
@@ -90,6 +101,8 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
             mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(topic);
             writer.write(json);
+        } catch (IOException e){
+            throw new PersistenceException(e);
         }
     }
 }

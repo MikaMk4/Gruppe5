@@ -1,6 +1,5 @@
 package hwr.oop.cards;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class NewBoxPersistenceTest {
 
     @Nested
-    class emptyPersistenceInstanceNameThrowsExceptionTests{
+    class invalidPersistenceInstanceNameThrowsExceptionTests {
 
         @Test
-        void save(){
+        void saveWithEmptyName(){
 
             NewPersistenceSavePort pa = new NewJsonPersistenceAdapter();
 
@@ -31,11 +30,34 @@ public class NewBoxPersistenceTest {
         }
 
         @Test
-        void load(){
+        void loadWithEmptyName(){
 
             NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+            LoadLernsessionFromPersistenceUseCase creator = new LoadLernsessionFromPersistenceUseCase(pa);
 
-            assertThrows(IllegalArgumentException.class, () -> pa.loadLernsession(""));
+            assertThrows(IllegalArgumentException.class, () -> creator.loadLernsession(""));
+        }
+
+        @Test
+        void saveWithInvalidName(){
+
+            NewPersistenceSavePort pa = new NewJsonPersistenceAdapter();
+
+            Boxes mediator = Boxes.createBoxes(3);
+            NewBox box1 = mediator.retrieve(0).get();
+            box1.addCard(new Card("Box 1?", "Box 1!", 0));
+            List<NewBox> boxes = List.of(box1);
+
+            assertThrows(PersistenceException.class, () -> pa.saveLernsession(boxes, "\\as"));
+        }
+
+        @Test
+        void loadWithInvalidName(){
+
+            NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+            LoadLernsessionFromPersistenceUseCase creator = new LoadLernsessionFromPersistenceUseCase(pa);
+
+            assertThrows(PersistenceException.class, () -> creator.loadLernsession("\\as"));
         }
     }
 
@@ -56,19 +78,11 @@ public class NewBoxPersistenceTest {
 
             List<NewBox> saveList = mediator.createBoxList();
             NewPersistenceSavePort persistenceSavePort = new NewJsonPersistenceAdapter();
-            try {
-                persistenceSavePort.saveLernsession(saveList, "test_box");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveLernsession(saveList, "test_box");
 
             NewPersistenceLoadPort persistenceLoadPort = new NewJsonPersistenceAdapter();
             Collection<NewBox> loadedList = null;
-            try {
-                loadedList = persistenceLoadPort.loadLernsession("test_box");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            loadedList = persistenceLoadPort.loadLernsession("test_box");
             assertThat(loadedList).isEqualTo(saveList);
         }
 
@@ -95,24 +109,13 @@ public class NewBoxPersistenceTest {
             List<NewBox> boxes2 = mediator2.createBoxList();
 
             NewPersistenceSavePort persistenceSavePort = new NewJsonPersistenceAdapter();
-            try {
-                persistenceSavePort.saveLernsession(boxes1, "test_box");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                persistenceSavePort.saveLernsession(boxes2, "test_box");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            persistenceSavePort.saveLernsession(boxes1, "test_box");
+            persistenceSavePort.saveLernsession(boxes2, "test_box");
 
             Collection<NewBox> loadedBox;
             NewPersistenceLoadPort persistenceLoadPort = new NewJsonPersistenceAdapter();
-            try {
-                loadedBox = persistenceLoadPort.loadLernsession("test_box");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            loadedBox = persistenceLoadPort.loadLernsession("test_box");
+
             assertThat(boxes1).isNotEqualTo(loadedBox);
             assertThat(boxes2).isEqualTo(loadedBox);
         }
