@@ -39,4 +39,21 @@ class NewTopicTests {
         assertThat(topic1).isNotEqualTo(card);
     }
 
+    @Test
+    void cardDeleteTest(){
+        Topic topic = new Topic("Englisch");
+        topic.createCard("Hallo?", "nein");
+        var testBool = topic.deleteCard("Hallo?");
+
+        assertThat(testBool).isTrue();
+    }
+
+    @Test
+    void cardCannotBeDeleted(){
+        Topic topic = new Topic("Englisch");
+        topic.createCard("Hallo?", "nein");
+        var testBool = topic.deleteCard("iaufhiasf?");
+
+        assertThat(testBool).isFalse();
+    }
 }

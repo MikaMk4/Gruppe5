@@ -26,9 +26,28 @@ public class Topic {
         Card newCard = new Card(question, answer, id);
         cardList.add(newCard);
     }
+
     @JsonIgnore
-    public boolean deleteCard(Card card){
-        return cardList.remove(card);
+    public boolean deleteCard(String question){
+        Card card = searchCardByQuestion(question);
+
+        if (card == null){
+            return false;
+        } else {
+            cardList.remove(card);
+            return true;
+        }
+    }
+
+    @JsonIgnore
+    private Card searchCardByQuestion(String question){
+        for (Card card : cardList){
+            if (card.getQuestion().equals(question)){
+                return card;
+            }
+        }
+
+        return null;
     }
 
     public String getName() {
