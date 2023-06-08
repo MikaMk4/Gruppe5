@@ -1,7 +1,6 @@
 package hwr.oop.cards;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -100,11 +99,7 @@ class CreateNewBoxTest {
     void lastLearnedIsUpdatedAfterMovingCardUp(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
-        try {
-            topic = pa.loadTopic("oldCard");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        topic = pa.loadTopic("oldCard");
         Card card = topic.getCardList().get(0);
         LocalDate oldCompDate = card.getLastLearned();
         Boxes boxes = Boxes.createBoxes(3);
@@ -119,11 +114,7 @@ class CreateNewBoxTest {
     void lastLearnedIsUpdatedAfterMovingCardDown(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
         Topic topic;
-        try {
-            topic = pa.loadTopic("oldCard");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        topic = pa.loadTopic("oldCard");
         Card card = topic.getCardList().get(0);
         LocalDate oldCompDate = card.getLastLearned();
         Boxes boxes = Boxes.createBoxes(3);
