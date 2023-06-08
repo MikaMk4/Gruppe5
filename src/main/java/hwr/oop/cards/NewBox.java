@@ -3,6 +3,7 @@ package hwr.oop.cards;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class NewBox{
@@ -40,6 +41,8 @@ public class NewBox{
             box.addCard(card);
         }catch(NoSuchElementException error){ //ok? oder auf isPresent checken?
             this.addCard(card);
+        }finally {
+            card.updateLastLearned();
         }
     }
 
@@ -49,6 +52,8 @@ public class NewBox{
             box.addCard(card);
         }catch(NoSuchElementException error){ //ok? oder auf isPresent checken?
             this.addCard(card);
+        }finally {
+            card.updateLastLearned();
         }
     }
     @JsonIgnore
@@ -63,18 +68,16 @@ public class NewBox{
     @JsonIgnore
 
     public boolean isEmpty(){ return (learnedCardList.isEmpty()&& unlearnedCardList.isEmpty());}
-    /*@JsonIgnore
+    @JsonIgnore
     public void updateBox() {
-        Date currentDate = new Date();
+        LocalDate currentDate = LocalDate.now();
         Calendar learnDate = Calendar.getInstance();
         int index = 0;
         ArrayList <Integer> indices = new ArrayList<Integer>();
-        Date lernTag = new Date();
         for (Card card: this.learnedCardList){
-            learnDate.setTime(card.getLastLearned()); //setzt Datum
-            learnDate.add(Calendar.DATE, learnInterval); //addiert Regel darauf
-            lernTag = learnDate.getTime(); //cast ist nötig
-            if (lernTag.before(currentDate)){
+            LocalDate lernTag = card.getLastLearned();
+            lernTag.plusDays(learnInterval);
+            if (lernTag.isBefore(currentDate)){
                 this.unlearnedCardList.add(card);
                 indices.add(index);
             }
@@ -84,7 +87,7 @@ public class NewBox{
         for (Integer i: indices){
             this.learnedCardList.remove((int)i); //cast nötig weil Remove(Object o) aufgerufen wird statt remove(index i)
         }
-    }*/
+    }
     @JsonIgnore
     public Card getRandomCard() {
         // learnedCardList müsste unlearned sein in der Logik mit einem Datum, für die Tests aber hinderlich

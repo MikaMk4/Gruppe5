@@ -1,10 +1,12 @@
 package hwr.oop.cards;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPersistenceLoadPort {
 
@@ -18,6 +20,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         }
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         mapper.writeValue(new File(persistenceInstanceName), boxen);
     }
 
@@ -30,6 +33,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(persistenceInstanceName))) {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             String json = reader.readLine();
             return mapper.readValue(json, new TypeReference<>() {
             });
@@ -44,6 +48,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         }
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         TypeReference<List<NewBox>> typeReference = new TypeReference<List<NewBox>>(){};
         List<NewBox> boxes = mapper.readValue(new File(persistenceInstanceName), typeReference);
 
@@ -84,6 +89,7 @@ public class NewJsonPersistenceAdapter implements NewPersistenceSavePort, NewPer
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(persistenceInstanceName))) {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(topic);
             writer.write(json);
         }

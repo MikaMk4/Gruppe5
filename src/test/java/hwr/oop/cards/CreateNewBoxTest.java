@@ -3,6 +3,7 @@ package hwr.oop.cards;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -47,21 +48,23 @@ public class CreateNewBoxTest {
         boolean isEmpty = box.isEmpty_unlearned();
         assertThat(isEmpty).isTrue();
     }
-    /*@Test
+    @Test
     void unlearnedCardListIsNotEmpty(){
-        Card card = new Card("Test", "Frage", 0);
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
         Boxes boxes = Boxes.createBoxes(3);
         NewBox box = boxes.retrieve(1).get();
         box.addCard(card); //landet in learned
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         box.updateBox();
         boolean isEmpty = box.isEmpty_unlearned();
         assertThat(isEmpty).isFalse();
-    }*/
+    }
     @Test
     void learnedCardListIsEmpty(){
         Boxes boxes = Boxes.createBoxes(3);
@@ -78,23 +81,24 @@ public class CreateNewBoxTest {
         boolean isEmpty = box.isEmpty_learned();
         assertThat(isEmpty).isFalse();
     }
-    /*
     @Test
     void canUpdateBox(){
-        Card card = new Card("Test", "Frage", 0);
-        Boxes boxes = Boxes.createBoxes(3);
-        NewBox box = boxes.retrieve(1).get();
-        box.addCard(card); //landet in learned#
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
         try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        Card card = topic.getCardList().get(0);
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(1).get();
+        box.addCard(card); //landet in learned
         box.updateBox();
         boolean isEmpty = box.isEmpty_unlearned();
         assertThat(box.isEmpty_learned()).isTrue();
         assertThat(isEmpty).isFalse();
-    }*/
+    }
     @Test
     void boxIsEmptyAfterDrawingAllCards(){
         Boxes boxes = Boxes.createBoxes(3);

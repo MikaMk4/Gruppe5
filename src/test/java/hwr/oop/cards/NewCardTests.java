@@ -2,6 +2,8 @@ package hwr.oop.cards;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,8 +84,8 @@ public class NewCardTests {
     @Test
     public void canGetLastLearned(){
         Card card = new Card("Test?", "Ja!", 42);
-        Date date = new Date();
-        assertThat(date).isCloseTo(card.getLastLearned(),1000);
+        LocalDate date = LocalDate.now();
+        assertThat(date).isEqualTo(card.getLastLearned());
     }
     @Test
     public void canEditCard(){
@@ -94,5 +96,21 @@ public class NewCardTests {
         Card card = lernsession.getRandomCard();
         card.edit("Tofu", "auch Beste");
         assertThat(topic.getCardList().get(0).getQuestion()).isEqualTo("Tofu");
+    }
+    @Test
+    public void canUpdateLastLearned(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        try {
+            topic = pa.loadTopic("oldCard");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Card card = topic.getCardList().get(0);
+        LocalDate oldLastLearned = card.getLastLearned();
+        card.updateLastLearned();
+        LocalDate newLastLearned = card.getLastLearned();
+        assertThat(oldLastLearned).isNotEqualTo(newLastLearned);
+        assertThat(newLastLearned).isEqualTo(LocalDate.now());
     }
 }
