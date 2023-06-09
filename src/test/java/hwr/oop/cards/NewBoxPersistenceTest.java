@@ -48,7 +48,7 @@ public class NewBoxPersistenceTest {
             box1.addCard(new Card("Box 1?", "Box 1!", 0));
             List<NewBox> boxes = List.of(box1);
 
-            assertThrows(PersistenceException.class, () -> pa.saveLernsession(boxes, "\\as"));
+            assertThrows(PersistenceException.class, () -> pa.saveLernsession(boxes, "\\as?"));
         }
 
         @Test
@@ -57,7 +57,7 @@ public class NewBoxPersistenceTest {
             NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
             LoadLernsessionFromPersistenceUseCase creator = new LoadLernsessionFromPersistenceUseCase(pa);
 
-            assertThrows(PersistenceException.class, () -> creator.loadLernsession("\\as"));
+            assertThrows(PersistenceException.class, () -> creator.loadLernsession("\\as?"));
         }
     }
 
