@@ -7,11 +7,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CreateNewBoxTest {
+    @Test
+    void cantLoadEmptyBoxes(){
+        List<NewBox> emptyBoxList = new ArrayList<>();
+        assertThrows(IllegalStateException.class, () -> new Boxes(emptyBoxList));
+    }
     @Test
      void canContainCards(){
         Boxes boxes = Boxes.createBoxes(3);
