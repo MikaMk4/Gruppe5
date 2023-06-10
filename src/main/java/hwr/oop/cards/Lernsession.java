@@ -33,14 +33,13 @@ public class Lernsession {
     }
 
     public int getRandomBoxIndex() {
-        return random.nextInt(numberOfBoxes - 1);
+        return random.nextInt(numberOfBoxes);
 
     }
     public int getRandomBoxIndexFromList(List<Integer> indexList){
         return indexList.get(random.nextInt(indexList.size()));
     }
     public Card getRandomCard(){
-        NewBox box;
         List<Integer> indexList = new ArrayList<>();
         for(int current = 0; current < numberOfBoxes; current++){
             if(!(mediator.retrieve(current).get().isEmptyLearned())) indexList.add(current);

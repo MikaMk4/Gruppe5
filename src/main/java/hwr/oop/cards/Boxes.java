@@ -18,6 +18,9 @@ public class Boxes {
 
     public Boxes(List<NewBox> boxen){
         this.boxMap = createMapFromBoxList(boxen);
+        if (boxMap.isEmpty()) {
+            throw new EmptyMapException();
+        }
     }
 
     private Map<Integer, NewBox> createMapFromBoxList(List<NewBox> boxen) {
@@ -75,10 +78,15 @@ public class Boxes {
         }
         return boxList;
     }
-    public
-    static class InvalidBoxNumberException extends RuntimeException{
+    public static class InvalidBoxNumberException extends RuntimeException{
         private InvalidBoxNumberException() {
             super("BoxNumber should be either 3, 5 or 7");
+        }
+    }
+
+    public static class EmptyMapException extends RuntimeException{
+        private EmptyMapException() {
+            super("Loaded boxes map should not be empty!");
         }
     }
 }

@@ -38,8 +38,7 @@ public class Topic {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Topic)) return false;
-        Topic topic = (Topic) o;
+        if (!(o instanceof Topic topic)) return false;
         if (cardList.size() != topic.cardList.size()) {
             return false;
         }
