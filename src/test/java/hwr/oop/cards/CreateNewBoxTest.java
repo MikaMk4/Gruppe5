@@ -59,6 +59,7 @@ class CreateNewBoxTest {
         NewBox box = boxes.retrieve(1).get();
         boolean isEmpty = box.isEmptyUnlearned();
         assertThat(isEmpty).isTrue();
+        assertThat(box.getUnlearnedCardList().isEmpty()).isTrue();
     }
     @Test
     void unlearnedCardListIsNotEmpty(){
@@ -73,6 +74,7 @@ class CreateNewBoxTest {
         box.updateBox();
         boolean isEmpty = box.isEmptyUnlearned();
         assertThat(isEmpty).isFalse();
+        assertThat(box.getUnlearnedCardList().isEmpty()).isFalse();
     }
     @Test
     void learnedCardListIsEmpty(){
@@ -192,5 +194,83 @@ class CreateNewBoxTest {
         Optional opt = mediator.retrieve(compBox1.getPrevious());
         assertThrows(NoSuchElementException.class, () -> opt.get());
     }
+
+    @Test
+    void BoxCanBeEmpty(){
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(1).get();
+        assertThat(box.isEmpty()).isTrue();
+    }
+
+    @Test
+    void BoxCanBeNotEmpty(){
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(1).get();
+
+        Card card1 = new Card("What is the smallest mammal in the world?", "The bumblebee bat.", 0);
+
+        box.addCard(card1);
+
+        assertThat(box.isEmpty()).isFalse();
+    }
+
+    @Test
+    void BoxCantBeEqualToCard(){
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(1).get();
+
+        Card card1 = new Card("What is the smallest mammal in the world?", "The bumblebee bat.", 0);
+
+        assertThat(box.equals(card1)).isFalse();
+    }
+    @Test
+    void unlearnedCardListIsEqualToSameCardList(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        topic = pa.loadTopic("oldCard");
+
+        Card card = topic.getCardList().get(0);
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(0).get();
+        box.addCard(card); //landet in learned
+        box.updateBox();
+
+
+        NewBox box2 = boxes.retrieve(1).get();
+
+        Card card2 = topic.getCardList().get(0);
+
+        box2.addCard(card2); //landet in learned
+        box2.updateBox();
+
+        assertThat(box.equals(box2)).isTrue();
+    }
+
+    @Test
+    void unlearnedCardListIsNotEqualToDifferentCardList(){
+        NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
+        Topic topic;
+        topic = pa.loadTopic("oldCard");
+
+        Card card = topic.getCardList().get(0);
+        Boxes boxes = Boxes.createBoxes(3);
+        NewBox box = boxes.retrieve(0).get();
+        box.addCard(card); //landet in learned
+        box.updateBox();
+
+        NewPersistenceLoadPort pa2 = new NewJsonPersistenceAdapter();
+        Topic topic2;
+        topic2 = pa2.loadTopic("oldCard2");
+
+        NewBox box2 = boxes.retrieve(1).get();
+
+        Card card2 = topic2.getCardList().get(0);
+
+        box2.addCard(card2); //landet in learned
+        box2.updateBox();
+
+        assertThat(box.equals(box2)).isFalse();
+    }
+
 }
 

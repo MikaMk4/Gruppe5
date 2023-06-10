@@ -33,7 +33,7 @@ public class Lernsession {
     }
 
     public int getRandomBoxIndex() {
-        return random.nextInt(numberOfBoxes - 1);
+        return random.nextInt(numberOfBoxes);
 
     }
     public int getRandomBoxIndexFromList(List<Integer> indexList){

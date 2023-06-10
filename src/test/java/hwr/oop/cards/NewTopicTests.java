@@ -41,8 +41,20 @@ class NewTopicTests {
         Topic topic1 = new Topic("Spanisch");
         topic1.createCard("Question 1", "Answer 1");
 
-        Topic topic2 = new Topic("Spanisch");
+        Topic topic2 = new Topic("Französisch");
         topic2.createCard("Question 2", "Answer 2");
+
+        assertThat(topic1.equals(topic2)).isFalse();
+    }
+
+    @Test
+    void EqualTopicsWithDifferentLengthCardLists() {
+        Topic topic1 = new Topic("Spanisch");
+        topic1.createCard("Question 1", "Answer 1");
+        topic1.createCard("Question 2", "Answer 2");
+
+        Topic topic2 = new Topic("Spanisch");
+        topic2.createCard("Question 1", "Answer 1");
 
         assertThat(topic1.equals(topic2)).isFalse();
     }

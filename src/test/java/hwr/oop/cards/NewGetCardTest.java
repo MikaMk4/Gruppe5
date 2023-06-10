@@ -32,8 +32,38 @@ class NewGetCardTest {
     }
     @Test
     void canGetRandomBoxIndex(){
-        int randomBoxIndex = lernsession.getRandomBoxIndex();
-        Assertions.assertThat(randomBoxIndex).isIn(List.of(0,1,2));
+        boolean checkIndexZero = false;
+        boolean checkIndexOne = false;
+        boolean checkIndexTwo = false;
+
+
+        for (int i = 0; i < 20; i++) {
+
+            int randomBoxIndex = lernsession.getRandomBoxIndex();
+
+            if (randomBoxIndex == 0) {
+                checkIndexZero = true;
+            }
+
+            if (randomBoxIndex == 1) {
+                checkIndexOne = true;
+            }
+
+            if (randomBoxIndex == 2) {
+                checkIndexTwo = true;
+            }
+
+            if (randomBoxIndex < 0 || randomBoxIndex > 2 || (checkIndexZero && checkIndexOne && checkIndexTwo)) {
+                break;
+            }
+        }
+
+        assertThat(checkIndexZero).isTrue();
+        assertThat(checkIndexOne).isTrue();
+        assertThat(checkIndexTwo).isTrue();
+
+
+
     }
     @Test
     void canGetRandomBoxIndexFromList(){
