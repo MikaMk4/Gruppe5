@@ -17,7 +17,11 @@ class CreateNewBoxTest {
     @Test
     void cantLoadEmptyBoxes(){
         List<NewBox> emptyBoxList = new ArrayList<>();
-        assertThrows(IllegalStateException.class, () -> new Boxes(emptyBoxList));
+        assertThrows(RuntimeException.class, () -> new Boxes(emptyBoxList));
+    }
+    @Test
+    void cantCreateInvalidNumberOfBoxes(){
+        assertThrows(RuntimeException.class, () -> Boxes.createBoxes(1));
     }
     @Test
      void canContainCards(){

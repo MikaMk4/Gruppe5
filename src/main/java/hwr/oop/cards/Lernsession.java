@@ -40,7 +40,6 @@ public class Lernsession {
         return indexList.get(random.nextInt(indexList.size()));
     }
     public Card getRandomCard(){
-        NewBox box;
         List<Integer> indexList = new ArrayList<>();
         for(int current = 0; current < numberOfBoxes; current++){
             if(!(mediator.retrieve(current).get().isEmptyLearned())) indexList.add(current);
