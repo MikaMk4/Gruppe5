@@ -35,11 +35,12 @@ class NewGetCardTest {
         boolean checkIndexZero = false;
         boolean checkIndexOne = false;
         boolean checkIndexTwo = false;
+        int breakLoopIfStuck = 0;
 
-
-        for (int i = 0; i < 20; i++) {
-
+        while (!checkIndexZero || !checkIndexOne || !checkIndexTwo) {
             int randomBoxIndex = lernsession.getRandomBoxIndex();
+            breakLoopIfStuck++;
+
 
             if (randomBoxIndex == 0) {
                 checkIndexZero = true;
@@ -53,7 +54,7 @@ class NewGetCardTest {
                 checkIndexTwo = true;
             }
 
-            if (randomBoxIndex < 0 || randomBoxIndex > 2 || (checkIndexZero && checkIndexOne && checkIndexTwo)) {
+            if (randomBoxIndex < 0 || randomBoxIndex > 2 || breakLoopIfStuck > 20) {
                 break;
             }
         }
