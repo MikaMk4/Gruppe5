@@ -3,13 +3,11 @@ package hwr.oop.cards;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class NewBoxPersistenceTest {
 
@@ -81,7 +79,7 @@ public class NewBoxPersistenceTest {
             persistenceSavePort.saveLernsession(saveList, "test_box");
 
             NewPersistenceLoadPort persistenceLoadPort = new NewJsonPersistenceAdapter();
-            Collection<NewBox> loadedList = null;
+            Collection<NewBox> loadedList;
             loadedList = persistenceLoadPort.loadLernsession("test_box");
             assertThat(loadedList).isEqualTo(saveList);
         }

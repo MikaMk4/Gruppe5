@@ -3,7 +3,6 @@ package hwr.oop.cards;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -59,7 +58,7 @@ class CreateNewBoxTest {
         NewBox box = boxes.retrieve(1).get();
         boolean isEmpty = box.isEmptyUnlearned();
         assertThat(isEmpty).isTrue();
-        assertThat(box.getUnlearnedCardList().isEmpty()).isTrue();
+        assertThat(box.getUnlearnedCardList()).isEmpty();
     }
     @Test
     void unlearnedCardListIsNotEmpty(){
@@ -74,7 +73,7 @@ class CreateNewBoxTest {
         box.updateBox();
         boolean isEmpty = box.isEmptyUnlearned();
         assertThat(isEmpty).isFalse();
-        assertThat(box.getUnlearnedCardList().isEmpty()).isFalse();
+        assertThat(box.getUnlearnedCardList()).isNotEmpty();
     }
     @Test
     void learnedCardListIsEmpty(){
@@ -121,8 +120,7 @@ class CreateNewBoxTest {
         box.moveCardUp(card);
         NewBox box2 = boxes.retrieve(1).get();
         LocalDate compDate = box2.getRandomCard().getLastLearned();
-        assertThat(compDate).isNotEqualTo(oldCompDate);
-        assertThat(compDate).isEqualTo(LocalDate.now());
+        assertThat(compDate).isNotEqualTo(oldCompDate).isEqualTo(LocalDate.now());
     }@Test
     void lastLearnedIsUpdatedAfterMovingCardDown(){
         NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
@@ -136,8 +134,7 @@ class CreateNewBoxTest {
         box2.moveCardDown(card);
         NewBox box1 = boxes.retrieve(0).get();
         LocalDate compDate = box1.getRandomCard().getLastLearned();
-        assertThat(compDate).isNotEqualTo(oldCompDate);
-        assertThat(compDate).isEqualTo(LocalDate.now());
+        assertThat(compDate).isNotEqualTo(oldCompDate).isEqualTo(LocalDate.now());
     }
 
     @Test
@@ -179,7 +176,7 @@ class CreateNewBoxTest {
         assertThat(box2).isEqualTo(compBox2);
         assertThat(box3).isEqualTo(compBox3);
         Optional opt = mediator.retrieve(compBox3.getNext());
-        assertThrows(NoSuchElementException.class, () -> opt.get());
+        assertThrows(NoSuchElementException.class, opt::get);
     }
     @Test
     void canGetPreviousBox(){
@@ -192,7 +189,7 @@ class CreateNewBoxTest {
         assertThat(box2).isEqualTo(compBox2);
         assertThat(box1).isEqualTo(compBox1);
         Optional opt = mediator.retrieve(compBox1.getPrevious());
-        assertThrows(NoSuchElementException.class, () -> opt.get());
+        assertThrows(NoSuchElementException.class, opt::get);
     }
 
     @Test

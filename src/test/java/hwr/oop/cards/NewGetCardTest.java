@@ -14,17 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class NewGetCardTest {
     private Lernsession lernsession;
     private Topic topic;
-    private NewBox box1;
-    private NewBox box2;
-    private NewBox box3;
-    private Card compareCard;
     @BeforeEach
     void setup(){
         lernsession = Lernsession.createLernsessionWith3Boxes();
         topic = new Topic("Random");
-        box1 = lernsession.getBoxes().retrieve(0).get();
-        box2 = lernsession.getBoxes().retrieve(1).get();
-        box3 = lernsession.getBoxes().retrieve(2).get();
         topic.createCard("Penny", "Doku");
         topic.createCard("escalera", "Leiter");
         topic.createCard("caballo", "Pferd");
@@ -79,7 +72,7 @@ class NewGetCardTest {
     @Test
     void cannotReturnRandomCardFromEmptyLernsession(){
         Lernsession lernsession1 = Lernsession.createLernsessionWith3Boxes();
-        assertThrows(Lernsession.EmptyBoxesException.class, () -> lernsession1.getRandomCard());
+        assertThrows(Lernsession.EmptyBoxesException.class, lernsession1::getRandomCard);
     }
 
     @Test

@@ -1,9 +1,6 @@
 package hwr.oop.cards;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

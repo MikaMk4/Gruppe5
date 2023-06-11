@@ -1,6 +1,5 @@
 package hwr.oop.cards;
 
-import java.io.IOException;
 import java.util.List;
 
 public class LoadLernsessionFromPersistenceUseCase {
@@ -13,8 +12,8 @@ public class LoadLernsessionFromPersistenceUseCase {
     public Lernsession loadLernsession(String filename) {
         Lernsession lernsession;
 
-        List<NewBox> boxList = null;
-        boxList = (List)persistenceLoadPort.loadLernsession(filename);
+        List<NewBox> boxList;
+        boxList = (List<NewBox>)persistenceLoadPort.loadLernsession(filename);
         Boxes boxes = new Boxes(boxList);
         lernsession = Lernsession.createLernsessionFromBoxes(boxes);
         return lernsession;

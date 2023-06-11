@@ -5,16 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
  class NewMoveCardTest {
-    private Lernsession lernsession;
-    private Topic topic;
-    private NewBox box1;
-    private NewBox box2;
-    private NewBox box3;
-    private Card compareCard;
+     private NewBox box1;
+     private NewBox box2;
+     private NewBox box3;
+     private Card compareCard;
     @BeforeEach
     void setup(){
         Lernsession lernsession = Lernsession.createLernsessionWith3Boxes();
-        topic = new Topic("Random");
+        Topic topic = new Topic("Random");
         box1 = lernsession.getBoxes().retrieve(0).get();
         box2 = lernsession.getBoxes().retrieve(1).get();
         box3 = lernsession.getBoxes().retrieve(2).get();
@@ -84,7 +82,4 @@ import org.junit.jupiter.api.Test;
         box1.moveCardDown(card);
         Assertions.assertThat(box1.getRandomCard()).isEqualTo(compareCard);
     }
-
-    /*@Test
-    void canMoveRandomCardUp(){}*/
 }

@@ -50,4 +50,9 @@ public class Topic {
         }
         return Objects.equals(name, topic.name);
     }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(name, cardList);
+    }
 }

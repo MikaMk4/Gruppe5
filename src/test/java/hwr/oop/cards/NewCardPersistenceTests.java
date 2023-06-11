@@ -3,10 +3,7 @@ package hwr.oop.cards;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class NewCardPersistenceTests {
 
@@ -45,7 +42,7 @@ public class NewCardPersistenceTests {
             topic.createCard("Question?", "Answer!");
             persistenceSavePort.saveTopic(topic, "test");
 
-            Topic testTopic = null;
+            Topic testTopic;
             testTopic = persistenceLoadPort.loadTopic("test");
 
             Assertions.assertThat(testTopic).isEqualTo(topic);
@@ -62,7 +59,7 @@ public class NewCardPersistenceTests {
             topic.createCard("Frage?", "Antwort!");
             persistenceSavePort.saveTopic(topic, "test");
 
-            Topic testTopic = null;
+            Topic testTopic;
             testTopic = persistenceLoadPort.loadTopic("test");
 
             Assertions.assertThat(testTopic).isEqualTo(topic);
@@ -81,7 +78,7 @@ public class NewCardPersistenceTests {
             topic.createCard("Question??????", "Answer!!!!!!");
             persistenceSavePort.saveTopic(topic1, "test");
 
-            Topic testTopic = null;
+            Topic testTopic;
             testTopic = persistenceLoadPort.loadTopic("test");
 
             Assertions.assertThat(testTopic).isEqualTo(topic1);
@@ -106,22 +103,10 @@ public class NewCardPersistenceTests {
 
             NewPersistenceLoadPort pa = new NewJsonPersistenceAdapter();
 
-            Topic loadedTopic = null;
+            Topic loadedTopic;
             loadedTopic = pa.loadTopic("test");
 
             Assertions.assertThat(loadedTopic).isEqualTo(savedTopic);
         }
-    }
-
-    // Just a little manual test to be able to look at the file
-    // JDK 16+ needed for this specifically
-    @AfterAll
-    static void afterAll(){
-
-        NewPersistenceSavePort pa = new NewJsonPersistenceAdapter();
-
-        Topic topic = new Topic("testTopic");
-        topic.createCard("Question?", "Answer!");
-        pa.saveTopic(topic, "manual_test");
     }
 }

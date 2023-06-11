@@ -5,7 +5,7 @@ import java.util.*;
 public class Lernsession {
     private final Boxes mediator;
     private final int numberOfBoxes;
-    private Random random = new Random();
+    private final Random random = new Random();
 
     // saving Boxes reference or reference to the box
     public static Lernsession createLernsessionWith3Boxes(){
@@ -45,7 +45,7 @@ public class Lernsession {
             if(!(mediator.retrieve(current).get().isEmptyLearned())) indexList.add(current);
         }
         if(indexList.isEmpty()) throw new EmptyBoxesException();
-        Integer index = getRandomBoxIndexFromList(indexList);
+        int index = getRandomBoxIndexFromList(indexList);
         return mediator.retrieve(index).get().getRandomCard();
     }
     // loading new Topic

@@ -33,11 +33,15 @@ public class Card {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Card)) {
+        if (!(obj instanceof Card other)) {
             return false;
         }
-        Card other = (Card) obj;
         return Objects.equals(question, other.question) && Objects.equals(answer, other.answer) && Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(id, question, answer, lastLearned);
     }
     @JsonIgnore
     public void edit(String question, String answer){

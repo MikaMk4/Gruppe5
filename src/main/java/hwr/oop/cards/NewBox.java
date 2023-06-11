@@ -11,7 +11,7 @@ public class NewBox{
     private final Boxes boxes;
     private final int next;
     private final int previous;
-    private int learnInterval;
+    private final int learnInterval;
     Random random = new Random();
 
     public NewBox(int learnInterval, Boxes boxes, int next, int previous){
@@ -117,6 +117,11 @@ public class NewBox{
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(learnedCardList, unlearnedCardList, learnInterval);
     }
 
     public List<Card> getLearnedCardList() {
